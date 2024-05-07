@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Blog | Make New Post
+
+{% endblock title %}
+
+{% block content %}
+
+<form action="#" method="POST" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="user" value="{{request.user}}">
+  <center>
+    <div class="logo f-logo">
+      <i class="fa-brands fa-blogger"></i>
+    </div>
+    {%if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="field-error">
+            <p>{{error}}</p>
+          </div>
+        {% endfor %}
+    {% endif %}
+    <div class="inputs">
+      <div>
+        <div class="search-bar s-active input">
+          {{form.title}}
+        </div>
+        {% if form.title.errors %}
+        <div class="field-error">
+          <p>{{form.username.errors.as_text}}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div>
+        <br>
+        <legend style="border: 1px solid rgb(49, 47, 47); border-radius: 25px;">
+           
+            {{form.content}}
+          
+        </legend>
+        {% if form.content.errors %}
+        <div class="field-error">
+          <p>{{form.content.errors.as_text}}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div>
+        <div class="search-bar s-active input">
+          {{form.slug}}
+        </div>
+        {% if form.slug.errors %}
+        <div class="field-error">
+          <p>{{form.slug.errors.as_text}}</p>
+        </div>
+        {% endif %}
+      </div>
+      <div>
+        <div class="search-bar s-active input">
+          {{form.image}}
+          
+        </div>
+        {% if form.image.errors %}
+        <div class="field-error">
+          <p>{{form.image.errors.as_text}}</p>
+        </div>
+        {% endif %}
+      </div>
+      <div>
+
+        <br>
+        <legend style="border: 1px solid rgb(49, 47, 47); border-radius: 25px;">
+     
+          {{form.tags}}
+          
+        </legend>
+        
+        {% if form.tags.errors %}
+        <div class="field-error">
+          <p>{{form.tags.errors.as_text}}</p>
+        </div>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary rounded">
+        MAKE POST <span class="material-icons"> arrow_right_alt </span>
+      </button>
+    </div>
+  </center>
+</form>
+
+{% endblock content %}

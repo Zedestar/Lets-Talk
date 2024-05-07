@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+  
+{% block title %}
+    Blog | My Post
+{% endblock title %}
+
+{% block content %}
+  
+  <main>
+        <div class="container">
+            <div class="page-top">
+                <div class="top flex">
+                    <div class="page-name">
+                        <a href="" class="learn">
+                        <span class="material-icons"> keyboard_return </span> Go back
+                        </a>
+                        <h1>All Posts</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <section class="sp">
+        <div class="container">
+            <div class="grid-3">
+        
+            {% for post in posts %}
+                <!-- card -->
+                <a href="{% url 'post_page' post.slug %}">
+                    <div class="card">
+                        <div class="post-img">
+                        <img src="{{post.image.url}}" alt="The image does not laoaded correctly" />
+                        {% for tag in post.tags.all %}
+                            <div class="tag">{{tag}}</div>
+                        {% endfor %}
+                        </div>
+                        <div class="card-content">
+                            <h3>
+                            {{post.title}}
+                            </h3>
+                            <div class="author">
+                                <div class="profile-pic">
+                                    <img src="{{post.author.profile.profile_image.url}}" alt="The image didn't load" />
+                                </div>
+                                <div class="details">
+                                    <p>
+                                    
+                                        {{post.author.first_name}}
+                                    
+                                    </p>
+                                    <small>{{post.last_updated|date}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            <!-- card end--> 
+            {% endfor %}
+            
+        </div>
+        <center>
+            <div style="display: flex;">
+                {% if posts.has_previous%}
+                <a href="?page=1">
+                    <button class="btn btn-primary rounded view">
+                        First Page <i class="fa-solid fa-arrow-left"></i>
+                    </button>   
+                </a>
+                <a href="?page={{posts.previous_page_number}}">
+                    <button class="btn btn-primary rounded view">
+                        Previous <i class="fa-solid fa-arrow-left"></i>
+                    </button>   
+                </a>
+                {% endif %}
+            </div>
+            <div>
+                <a>
+                    <button class="btn btn-primary rounded view">
+                        Page:{{posts.number}} of {{posts.paginator.num_pages}}
+                    </button>   
+                </a>
+                
+            </div>
+            <div style="display: flex; float: right;">
+                {% if posts.has_next%}
+                    <a href="?page={{posts.next_page_number}}">
+                        <button class="btn btn-primary rounded view">
+                            Next <i class="fa-regular fa-arrow-right"></i>
+                        </button>   
+                    </a>
+                    <a href="?page={{posts.next_page_number}}">
+                        <button class="btn btn-primary rounded view">
+                            Next <i class="fa-regular fa-arrow-right"></i>
+                        </button>   
+                    </a>
+                {% endif %}
+            </div>
+        </center>
+        </div>
+    </section>
+
+
+{% endblock content%}
+  

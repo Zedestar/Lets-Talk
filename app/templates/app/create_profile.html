@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Blog | Make New Post
+
+{% endblock title %}
+
+{% block content %}
+
+<form action="#" method="POST" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="user" value="{{request.user}}">
+  <center>
+    <div class="logo f-logo">
+      <i class="fa-brands fa-blogger"></i>
+    </div>
+    {%if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="field-error">
+            <p>{{error}}</p>
+          </div>
+        {% endfor %}
+    {% endif %}
+    <div class="inputs">
+      <div>
+            <legend style="border: 1px solid rgb(49, 47, 47); border-radius: 25px;">
+            
+                {{form.bio}}
+            
+            </legend>
+            {% if form.bio.errors %}
+            <div class="field-error">
+            <p>{{form.bio.errors.as_text}}</p>
+            </div>
+            {% endif %}
+      </div>
+
+      <br>
+
+      <div>
+            {{form.profile_image}}
+            {% if form.profile_image.errors %}
+            <div class="field-error">
+            <p>{{form.profile_image.errors.as_text}}</p>
+            </div>
+            {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-primary rounded">
+        EDIT PROFILE <span class="material-icons"> arrow_right_alt </span>
+      </button>
+    </div>
+  </center>
+</form>
+
+{% endblock content %}
