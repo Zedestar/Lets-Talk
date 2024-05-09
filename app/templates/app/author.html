@@ -37,7 +37,9 @@
                     Add Post
                   </button>
                 </a>
-                <a href="">
+                {% comment %} This is last change I made  {% endcomment %}
+                <a href="{% url 'edit_profile' profile.id %}">
+                  {% comment %} This is the line i made changes {% endcomment %}
                   <button class="btn btn-primary rounded view">
                     Check Profile
                   </button>
