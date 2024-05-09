@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.urls import reverse
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -15,7 +16,7 @@ class MetaWebsite(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_image = models.ImageField(upload_to="profile_pic")
+    profile_image = CloudinaryField('image', null=True, blank=True)
     slug = models.SlugField(max_length=200, unique=True)
     bio = models.CharField(max_length=200)
 
@@ -54,7 +55,7 @@ class Post(models.Model):
     content = models.TextField()
     last_updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=200, unique=True)
-    image = models.ImageField(null=True, blank=True, upload_to="images")
+    image = CloudinaryField('image', null=True, blank=True)
     view_count = models.IntegerField(blank=True, null=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="post")
     is_featured = models.BooleanField(default=False)

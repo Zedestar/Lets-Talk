@@ -5,6 +5,18 @@ environ.Env.read_env()
 import os
 from pathlib import Path
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# Cloud settings
+cloudinary.config(
+    cloud_name = env('CLOUD_NAME'),
+    api_key = env('CLOUD_API_KEY'),
+    api_secret = env('CLOUD_API_SECRET')
+)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,12 +134,12 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static'
+# ]
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
-STATIC_ROOT = BASE_DIR / 'static'
+# STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFIELS_STORAGE = 'whitenoise.storage.CompressedStaticFilesStrorage'
 
