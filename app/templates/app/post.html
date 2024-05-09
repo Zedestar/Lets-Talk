@@ -2,351 +2,368 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-    {% block content %}
+{% block content %}
 
-      <div class="container">
-        <div class="layout">
-          <!-- left layout -->
-          <div class="left">
-            <div class="page-top">
-              <div class="top flex">
-                <div class="page-name">
-                  <a href="#" class="learn">
-                    <span class="material-icons"> keyboard_return </span> Go
-                    back
-                  </a>
-                  <h1>Blog</h1>
-                </div>
-              </div>
+  <div class="container">
+    <div class="layout">
+      <!-- left layout -->
+      <div class="left">
+
+        <div class="page-top">
+          <div class="top flex">
+            <div class="page-name">
+              <a href="{% url 'index' %}" class="learn">
+                <span class="material-icons"> keyboard_return </span> Go
+                back
+              </a>
+              <h1>Blog</h1>
             </div>
+          </div>
+        </div>
 
-            <center>
-              <div class="typo">
-                <h1 class="title blog-title">
-                  {{post.title}}
-                </h1>
-                <div class="timeline">
-                  <div class="track">
-                    <i class="uil uil-clock"></i>
-                    <p class="time">{{post.last_updated|date}}</p>
-                  </div>
-                  <div class="track">
-                    <i class="uil uil-users-alt"></i>
-                    <p class="view-count">{{post.view_count}} view{{post.view_count|pluralize}}</p>
-                  </div>
-                  
-                  <div class="track">
-                    {% if request.user.is_authenticated %}
-                      <form action="{% url 'bookmarks' post.slug %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="post_id" value="{{post.id}}">
-                          {% if bookmarked %}
-                          <button type="submit" class="btn btn-info">
-                            <i class="fa-solid fa-bookmark"></i>
-                            <p class="bookmark">Remove bookmark</p>
-                          </button>
-                          {% else %}
-                          <button type="submit" class="btn btn-info">
-                            <i class="uil uil-bookmark-full"></i>
-                            <p class="bookmark">Bookmark</p>
-                          </button>
-                          {% endif %}
-                      </form>
-                    {% else %}
-
-                      <a href="{% url 'login' %}" class="btn btn-info">
+        <center>
+          <div class="typo">
+            <h1 class="title blog-title">
+              {{post.title}}
+            </h1>
+            <div class="timeline">
+              <div class="track">
+                <i class="uil uil-clock"></i>
+                <p class="time">{{post.last_updated|date}}</p>
+              </div>
+              <div class="track">
+                <i class="uil uil-users-alt"></i>
+                <p class="view-count">{{post.view_count}} view{{post.view_count|pluralize}}</p>
+              </div>
+              
+              <div class="track">
+                {% if request.user.is_authenticated %}
+                  <form action="{% url 'bookmarks' post.slug %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{post.id}}">
+                      {% if bookmarked %}
+                      <button type="submit" class="btn btn-info">
+                        <i class="fa-solid fa-bookmark"></i>
+                        <p class="bookmark">Remove bookmark</p>
+                      </button>
+                      {% else %}
+                      <button type="submit" class="btn btn-info">
                         <i class="uil uil-bookmark-full"></i>
                         <p class="bookmark">Bookmark</p>
-                      </a>
-
-                    {% endif %}
-
-                  </div>
-                  
-                </div>
-              </div>
-            </center>
-            <section class="mt">
-              <div class="container">
-                <!-- blog post -->
-                <div class="blog-post">
-                  <div class="post-img blog-img">
-                    <img src="{{post.image.url}}" alt="The Image doesnot load correctly" />
-                  </div>
-                  <div class="blog-post-content">
-
-                    <p>{{post.content|safe}}</p>
-                    <div class="blog-tags">
-                      {% for tag in post.tags.all %}
-                        <a href="{% url 'tag_page' tag.slug %}" class="tag">{{tag}}</a>
-                      {% endfor %}
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                      <div class="author">
-                        <a href="{% url 'author_page' post.author.profile.slug %}" class="profile-pic">
-                          <img src="{{post.author.profile.profile_image.url}}" alt="" />
-                        </a>
-                      </div>
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                      <!-- Delete post button (visible only to the owner of the post) -->
-                      {% if request.user == post.author %}
-                        <form action="{% url 'delete_post' post.slug %}" method="POST" style="float: right;">
-                            {% csrf_token %}
-                            <input type="hidden" name="post_id" value="{{post.id}}">
-                            <button type="submit" class="btn btn-danger">Delete Post</button>
-                        </form>
+                      </button>
                       {% endif %}
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                      <!--  -->
-                    </div>
-                    <div class="social-share">
-                      <form method="POST" action="{% url 'like' post.slug %}" class="reactions">
+                  </form>
+                {% else %}
+
+                  <a href="{% url 'login' %}" class="btn btn-info">
+                    <i class="uil uil-bookmark-full"></i>
+                    <p class="bookmark">Bookmark</p>
+                  </a>
+
+                {% endif %}
+
+              </div>
+              
+            </div>
+          </div>
+        </center>
+
+        <section class="mt">
+          <div class="container">
+            <!-- blog post -->
+            
+            <div class="blog-post">
+              <div class="post-img blog-img">
+                <img src="{{post.image.url}}" alt="The Image doesnot load correctly" />
+              </div>
+
+              <div class="blog-post-content">
+
+                <p>{{post.content|safe}}</p>
+                <div class="blog-tags">
+                  {% for tag in post.tags.all %}
+                    <a href="{% url 'tag_page' tag.slug %}" class="tag">{{tag}}</a>
+                  {% endfor %}
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                  <div class="author">
+                    <a href="{% url 'author_page' post.author.profile.slug %}" class="profile-pic">
+                      <img src="{{post.author.profile.profile_image.url}}" alt="" />
+                    </a>
+                  </div>
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                  <!-- Delete post button (visible only to the owner of the post) -->
+                  {% if request.user == post.author %}
+                    <form action="{% url 'delete_post' post.slug %}" method="POST" style="float: right;">
                         {% csrf_token %}
-                        <input type="hidden" name="like_id" value="{{post.id}}">
-                        <div class="likes">
-                          {% if request.user.is_authenticated %}
-                            {% if liked %}
-                              <button type="submit">
-                                <i class="fa-solid fa-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
-                              </button>
-                            {% else %}
-                              <button type="submit">
-                                <i class="uil uil-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
-                              </button>
-                            {% endif %} 
-                          {% else %}
-                            <a href="{% url 'login' %}" type="submit">
-                              <i class="uil uil-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
-                            </a> 
-                          {% endif%}
-                        </div>
-                        <div class="total-comments">
-                          <i class="uil uil-comment-alt"></i>
-                          <span>10</span>
-                        </div>
-                      </form>
-                      <div class="share">
-                        <div class="social">
-                          <a href="#">
-                            <i class="fa-brands fa-facebook-f"></i>
-                          </a>
-                          <a href="#">
-                            <i class="fa-brands fa-instagram"></i>
-                          </a>
-                          <a href="#">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                          </a>
-                          <a href="#">
-                            <i class="fa-brands fa-twitter"></i>
-                          </a>
-                        </div>
-                      </div>
+                        <input type="hidden" name="post_id" value="{{post.id}}">
+                        <button type="submit" class="btn btn-danger">Delete Post</button>
+                    </form>
+                  {% endif %}
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                  <!--  -->
+                </div>
+                <div class="social-share">
+
+                  <form method="POST" action="{% url 'like' post.slug %}" class="reactions">
+                    {% csrf_token %}
+                    <input type="hidden" name="like_id" value="{{post.id}}">
+                    <div class="likes">
+                      {% if request.user.is_authenticated %}
+                        {% if liked %}
+                          <button type="submit">
+                            <i class="fa-solid fa-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
+                          </button>
+                        {% else %}
+                          <button type="submit">
+                            <i class="uil uil-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
+                          </button>
+                        {% endif %} 
+                      {% else %}
+                        <a href="{% url 'login' %}" type="submit">
+                          <i class="uil uil-heart"></i> <span style="font-size: larger;" >{{number_of_likes}}</span>
+                        </a> 
+                      {% endif%}
                     </div>
-                    {% for comment in comments %}
-                    <!-- comments -->
-                    <div class="user-comment">
+                    <div class="total-comments">
+                      <i class="uil uil-comment-alt"></i>
+                      {% if number_of_comments %}
+                      <span>{{number_of_comments}}</span>
+                      {% else %}
+                      <span>0</span>
+                      {% endif %}
+                    </div>
+                  </form>
+
+                  <div class="share">
+                    <div class="social">
+                      <a href="#">
+                        <i class="fa-brands fa-facebook-f"></i>
+                      </a>
+                      <a href="#">
+                        <i class="fa-brands fa-instagram"></i>
+                      </a>
+                      <a href="#">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                      </a>
+                      <a href="#">
+                        <i class="fa-brands fa-twitter"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+                {% for comment in comments %}
+                <!-- comments -->
+
+                <div class="user-comment">
+
+                  <div class="author">
+                    <div class="profile-pic">
+                      <img src="{{comment.user.profile.profile_image.url}}" alt="" />
+                    </div>
+                    <div class="details">
+                      <p>{{comment.name}}</p>
+                      <small>{{comment.date|date}}</small>
+                    </div>
+                  </div>
+
+                  <div class="comment-sec-main">
+                    <div class="comment-sec">
+                      <div class="comment">
+                        <p>
+                          {{comment.content}}
+                        </p>
+                      </div>
+                      {% if user.is_authenticated%}
+                      <div class="reply">
+                        <button onclick="toggleDiv(this)">Reply</button>
+                      </div>
+                      {% else %}
+                      <div class="reply">
+                        <p>Sign-in or Sign-up to reply to the comment</p>
+                      </div>
+                      {% endif %}
+                      <div class="comment-box" id="comment-reply-box">
+                        <h3>Reply to post</h3>
+          
+                        <form action="" method="POST">
+
+                          {% csrf_token %}
+      
+                          {{form.content|as_crispy_field}}
+                          <div class="grid-3">
+                            <input hidden name="post_id" value="{{post.id}}">
+                            <input hidden name="parent" value="{{comment.id}}">
+                            
+                            
+                          </div>
+                          <button type="submit" class="btn btn-primary rounded">
+                            Post comment
+                          </button>
+                        </form>
+                      </div>  
+
+                    </div>
+                    
+                    {% for reply in comment.replies.all %}
+                    <div class="public-reply">
                       <div class="author">
                         <div class="profile-pic">
-                          <img src="{% static 'image/male-1.png' %}" alt="" />
+                          <img src="{{reply.user.profile.profile_image.url}}" alt="" />
                         </div>
                         <div class="details">
-                          <p>{{comment.name}}</p>
-                          <small>{{comment.date|date}}</small>
+                          <p>{{reply.name}}</p>
+                          <small>{{reply.date|date}}</small>
                         </div>
                       </div>
-                      <div class="comment-sec-main">
-                        <div class="comment-sec">
-                          <div class="comment">
-                            <p>
-                              {{comment.content}}
-                            </p>
-                          </div>
-                          {% if user.is_authenticated%}
-                          <div class="reply">
-                            <button onclick="toggleDiv(this)">Reply</button>
-                          </div>
-                          {% else %}
-                          <div class="reply">
-                            <p>Sign-in or Sign-up to reply to the comment</p>
-                          </div>
-                          {% endif %}
-                          <div class="comment-box" id="comment-reply-box">
-                            <h3>Reply to post</h3>
-              
-                            <form action="" method="POST">
-
-                              {% csrf_token %}
-          
-                              {{form.content|as_crispy_field}}
-                              <div class="grid-3">
-                                <input hidden name="post_id" value="{{post.id}}">
-                                <input hidden name="parent" value="{{comment.id}}">
-                                
-                                
-                              </div>
-                              <button type="submit" class="btn btn-primary rounded">
-                                Post comment
-                              </button>
-                            </form>
-                          </div>  
-
-                        </div>
-                        
-                        {% for reply in comment.replies.all %}
-                        <div class="public-reply">
-                          <div class="author">
-                            <div class="profile-pic">
-                              <img src="{% static 'image/male.png'%}" alt="" />
-                            </div>
-                            <div class="details">
-                              <p>{{reply.name}}</p>
-                              <small>{{reply.date|date}}</small>
-                            </div>
-                          </div>
-                          <div class="comment">
-                            <p>
-                              {{reply.content}}
-                            </p>
-                          </div>
-                        </div> 
-                        {% endfor %}                  
+                      <div class="comment">
+                        <p>
+                          {{reply.content}}
+                        </p>
                       </div>
-                    </div>
-
-                    <!-- user comment -->
-                    {% endfor %}
+                    </div> 
+                    {% endfor %}                  
                   </div>
+
                 </div>
-                <div class="comment-box">
-                  <h3>Leave a new comment to this post</h3>
-                  {% if user.is_authenticated %}
+
+                <!-- user comment -->
+                {% endfor %}
+              </div>
+            </div>
+            <div class="comment-box">
+              <h3>Leave a new comment to this post</h3>
+              {% if user.is_authenticated %}
+              
+              <form action="" method="POST">
+
+                {% csrf_token %}
+
+                {{form.content|as_crispy_field}}
+                <div class="grid-3">
+                  <input hidden name="post_id" value="{{post.id}}">
                   
-                  <form action="" method="POST">
+                  
+                </div>
+                <button type="submit" class="btn btn-primary rounded">
+                  Post comment
+                </button>
+              </form>
+              {% else %}
+              <p>
+                Sign-in or Sign-up to Leave a Comment<span>*</span>
+              </p>
+              {% endif %}
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- left layout end -->
 
-                    {% csrf_token %}
+      <!-- right layout -->
+      <div class="right">
 
-                    {{form.content|as_crispy_field}}
-                    <div class="grid-3">
-                      <input hidden name="post_id" value="{{post.id}}">
-                     
-                      
-                    </div>
-                    <button type="submit" class="btn btn-primary rounded">
-                      Post comment
-                    </button>
-                  </form>
-                  {% else %}
-                  <p>
-                    Sign-in or Sign-up to Leave a Comment<span>*</span>
-                  </p>
-                  {% endif %}
+        <div class="block">
+          <h2 class="title2">Most recent</h2>
+          {% for post in recent_post %}
+            <div class="recent-post">
+              <div class="rounded-img">
+                <img src="{{post.image.url}}" alt="" />
+              </div>
+              <div class="recent-content">
+                <h3>
+                  {{post.content|safe}}
+                </h3>
+                <a class="learn" href="{% url 'all_post' %}"
+                  >Learn more
+                  <span class="material-icons"> trending_flat </span></a
+                >
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+
+        <div class="block r-blog">
+          <h2 class="title2">Related Post</h2>
+          {% for post in related_post %}
+          <!-- card -->
+          <a href="{% url 'post_page' post.slug %}">
+            <div class="card">
+              <div class="post-img">
+                <img src="{{post.image.url}}" alt="" />
+                <div class="tag">Tag name</div>
+              </div>
+              <div class="card-content">
+                <h3>
+                  {{post.content|safe}}
+                </h3>
+                <div class="author">
+                  <div class="profile-pic">
+                    <img src="{{post.author.profile.profile_image.url}}" alt="" />
+                  </div>
+                  <div class="details">
+                    <p>{{post.author.username}}</p>
+                    <small>{{post.last_updated}}</small>
+                  </div>
                 </div>
               </div>
-            </section>
-          </div>
-          <!-- left layout end -->
-
-          <!-- right layout -->
-          <div class="right">
-            <div class="block">
-              <h2 class="title2">Most recent</h2>
-              {% for post in recent_post %}
-                <div class="recent-post">
-                  <div class="rounded-img">
-                    <img src="{{post.image.url}}" alt="" />
-                  </div>
-                  <div class="recent-content">
-                    <h3>
-                      {{post.content|safe}}
-                    </h3>
-                    <a class="learn" href="{% url 'all_post' %}"
-                      >Learn more
-                      <span class="material-icons"> trending_flat </span></a
-                    >
-                  </div>
-                </div>
-              {% endfor %}
-
             </div>
-
-            <div class="block r-blog">
-              <h2 class="title2">Related Post</h2>
-              {% for post in related_post %}
-              <!-- card -->
-              <a href="{% url 'post_page' post.slug %}">
-                <div class="card">
-                  <div class="post-img">
-                    <img src="{{post.image.url}}" alt="" />
-                    <div class="tag">Tag name</div>
-                  </div>
-                  <div class="card-content">
-                    <h3>
-                      {{post.content|safe}}
-                    </h3>
-                    <div class="author">
-                      <div class="profile-pic">
-                        <img src="{{post.author.profile.profile_image.url}}" alt="" />
-                      </div>
-                      <div class="details">
-                        <p>{{post.author.username}}</p>
-                        <small>{{post.last_updated}}</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-              <!-- card end-->
-              {% endfor %}
+          </a>
+          <!-- card end-->
+          {% endfor %}
 
 
-            </div>
-            <div class="block">
-              <h2 class="title2">Top Authors</h2>
-              {% for author in top_authors %}
-                <div class="recent-post">
-                  <div class="rounded-img">
-                    <img src="{{author.profile.profile_image.url}}" alt="" />
-                  </div>
-                  <div class="recent-content">
-                    <h3>
-                      {{author.username|safe}}
-                    </h3>
-
-                    {% if author.profile %}
-                      <a class="learn" href="{% url 'author_page' author.profile.slug  %}"
-                        >Learn more
-                        <span class="material-icons"> trending_flat </span>
-                      </a>
-                    {% else %}
-                    <a class="learn">
-                      No profile
-                      <span class="material-icons"> trending_flat </span>
-                    </a>
-                    {% endif %}
-                  </div>
-                </div>
-              {% endfor %}
-             
-            </div>
-
-            <div class="block">
-              <h2 class="title2">Top Tags</h2>
-              {% for tag in tags%}
-                <a href="{% url 'tag_page' tag.slug %}" class="blog-tags">
-                    <div class="tag">{{tag.name}}</div>
-                </a>
-              {% endfor%}
-            </div>
-          </div>
-          <!-- right layout end -->
         </div>
+
+        <div class="block">
+          <h2 class="title2">Top Authors</h2>
+          {% for author in top_authors %}
+            <div class="recent-post">
+              <div class="rounded-img">
+                <img src="{{author.profile.profile_image.url}}" alt="" />
+              </div>
+              <div class="recent-content">
+                <h3>
+                  {{author.username|safe}}
+                </h3>
+
+                {% if author.profile %}
+                  <a class="learn" href="{% url 'author_page' author.profile.slug  %}"
+                    >Learn more
+                    <span class="material-icons"> trending_flat </span>
+                  </a>
+                {% else %}
+                <a class="learn">
+                  No profile
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+          
+        </div>
+
+        <div class="block">
+          <h2 class="title2">Top Tags</h2>
+          {% for tag in tags%}
+            <a href="{% url 'tag_page' tag.slug %}" class="blog-tags">
+                <div class="tag">{{tag.name}}</div>
+            </a>
+          {% endfor%}
+        </div>
+
       </div>
+      <!-- right layout end -->
+    </div>
+  </div>
       
-    {% endblock content %}
+{% endblock content %}

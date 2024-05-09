@@ -15,7 +15,7 @@ def index(request):
     subscribed = ''
     if request.method == 'POST':
         subscribe_form = SubsribeForm(request.POST)
-        if subscribe_form.is_valid:
+        if subscribe_form.is_valid():
             subscribe_form.save()
             request.session['subscribed'] == True
             subscribe_form = SubsribeForm()
@@ -49,9 +49,13 @@ def post_page(request, slug):
     #######getting the author of the post ######
     author_profile = Profile.objects.get(user=post.author)
 
+    # JobPost.objects.filter(skills__in = [1,2])
+
 
     form = CommentForm()
     comments = Comment.objects.filter(post=post, parent=None)
+    # comments = post.comment_set.all()
+    number_of_comments = post.comment_set.all().count()
 
     if request.method == "POST":
         form_comment = CommentForm(request.POST)
@@ -65,6 +69,7 @@ def post_page(request, slug):
                 reply_comment.post = post
                 reply_comment.parent = comment
                 reply_comment.name = request.user.username
+                reply_comment.user = request.user
                 reply_comment.save()
                 print('reply was saved')
                 return redirect('post_page', slug)
@@ -74,6 +79,7 @@ def post_page(request, slug):
                 post = Post.objects.get(id=postId)
                 comment.post = post
                 comment.name = request.user.username
+                comment.user = request.user
                 comment.save()
                 print('Comment was saved')
                 return redirect('post_page', slug)
@@ -90,8 +96,6 @@ def post_page(request, slug):
 
         ########### THIS IS LIKE LOGIC ###########
     number_of_likes = post.like_number()
-
-
 
     if post.view_count is None:
         post.view_count = 1
@@ -113,12 +117,12 @@ def post_page(request, slug):
         'bookmarked':bookmarked,
         'liked':liked,
         'number_of_likes':number_of_likes,
+        'number_of_comments':number_of_comments,
         'author_profile':author_profile,
         'recent_post':recent_post,
         'top_authors':top_authors,
         'related_post':related_post,
         'tags':tags
-
     }
     return  render(request, 'app/post.html', context=context)
 
@@ -199,7 +203,6 @@ def logout_page(request):
 
 def bookmarks_page(request, slug):
     id = request.POST.get('post_id')
-    print('This is id am looking for....', id)
     post = get_object_or_404(Post, id=id)
     if post.bookmarks.filter(id=request.user.id).exists():
         post.bookmarks.remove(request.user)
@@ -215,7 +218,6 @@ def like_page(request, slug):
         post.likes.remove(request.user)
     else:
         post.likes.add(request.user)
-
     return redirect('post_page', slug)
 
 
@@ -228,7 +230,7 @@ def all_bookmark_page(request):
 
 def all_posts(request):
     all_posts = Post.objects.all()
-    pagination = Paginator(all_posts, 2)
+    pagination = Paginator(all_posts, 3)
     page = request.GET.get('page')
     try:
         posts = pagination.get_page(page)
@@ -261,6 +263,7 @@ def new_post(request):
         form = Create_Post(request.POST, request.FILES) 
         if form.is_valid():
             post = form.save(commit=False) 
+            post.author = request.user
             post.save()   
             request.user.post.add(post)
             
@@ -270,8 +273,6 @@ def new_post(request):
     }
     return render(request, 'app/new_post.html', context=context)
 
-
-from django.shortcuts import get_object_or_404
 
 def edit_profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)

@@ -44,6 +44,22 @@ Blog | Registration
             {% endif %}
           </div>
 
+
+          <div>
+            <div class="search-bar s-active input">
+              {{form.first_name}}
+              <div class="animated-search">
+                <i class="uil uil-user"></i>
+              </div>
+            </div>
+            {% if form.first_name.errors %}
+            <div class="field-error">
+              <p>{{form.first_name.errors.as_text}}</p>
+            </div>
+            {% endif %}
+          </div>
+
+
           <div>
             <div class="search-bar s-active input">
               {{form.email}}

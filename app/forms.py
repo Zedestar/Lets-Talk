@@ -58,6 +58,16 @@ class UserCreationForm(UserCreationForm):
         )
     )
 
+    first_name = forms.CharField(
+        min_length = 3,
+        widget = forms.TextInput(
+            attrs = {
+                'placeholder':'Enter Your first name...',
+                'autocomplete':'off'
+            }
+        )
+    )
+
     email = forms.CharField(
     min_length = 3,
     widget = forms.TextInput(
@@ -72,6 +82,15 @@ class UserCreationForm(UserCreationForm):
     widget = forms.PasswordInput(
         attrs = {
             'placeholder':'Enter your password...',
+            'autocomplete':'off'
+        }
+    )
+    )
+
+    password2 = forms.CharField(
+    widget = forms.PasswordInput(
+        attrs = {
+            'placeholder':'Confirm your password...',
             'autocomplete':'off'
         }
     )

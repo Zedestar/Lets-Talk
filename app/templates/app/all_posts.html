@@ -58,12 +58,12 @@
             {% endfor %}
             
         </div>
-        <center>
+        <center style="display: flex; float:center;">
             <div style="display: flex;">
                 {% if posts.has_previous%}
                 <a href="?page=1">
                     <button class="btn btn-primary rounded view">
-                        First Page <i class="fa-solid fa-arrow-left"></i>
+                        First 
                     </button>   
                 </a>
                 <a href="?page={{posts.previous_page_number}}">
@@ -88,9 +88,9 @@
                             Next <i class="fa-regular fa-arrow-right"></i>
                         </button>   
                     </a>
-                    <a href="?page={{posts.next_page_number}}">
+                    <a href="?page={{posts.paginator.num_pages}}">
                         <button class="btn btn-primary rounded view">
-                            Next <i class="fa-regular fa-arrow-right"></i>
+                            Last 
                         </button>   
                     </a>
                 {% endif %}

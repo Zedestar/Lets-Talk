@@ -32,12 +32,12 @@
               </p>
               {% if request.user == profile.user %}
               <center>
-                <a href="" >
+                <a href="{% url 'new_post' %}" >
                   <button class="btn btn-primary rounded view">
                     Add Post
                   </button>
                 </a>
-                <a href="" >
+                <a href="">
                   <button class="btn btn-primary rounded view">
                     Check Profile
                   </button>
@@ -139,10 +139,16 @@
                   {{author.username}}
                 </h3>
                 <!--  -->
-                <!--  -->
-                <!--  -->
-                <!--  -->
-                <!--  -->
+                {% if author.profile %}
+                  <a class="learn" href="{% url 'author_page' author.profile.slug  %}"
+                    >Learn more
+                    <span class="material-icons"> trending_flat </span>
+                  </a>
+                {% else %}
+                <a class="learn">
+                  No profile
+                </a>
+                {% endif %}
                
               </div>
             </div>
