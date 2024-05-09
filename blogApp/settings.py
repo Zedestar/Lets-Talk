@@ -41,6 +41,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -127,6 +128,8 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
 STATIC_ROOT = BASE_DIR / 'static'
+
+STATICFIELS_STORAGE = 'whitenoise.storage.CompressedStaticFilesStrorage'
 
 LOGIN_REDIRECT_URL = '/'
 
