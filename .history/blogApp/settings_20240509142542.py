@@ -139,7 +139,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
-STATIC_ROOT = BASE_DIR / 'statics'
+STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFIELS_STORAGE = 'whitenoise.storage.CompressedStaticFilesStrorage'
 
